@@ -9,10 +9,3 @@ public class Main {
         menuFonteInfo.run();
     }
 }
-
-
-// coisas
-//mariana
-//miguel
-//isto vai dar asneira
-//porque tem aqui coisas
