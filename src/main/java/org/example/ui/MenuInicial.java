@@ -1,9 +1,6 @@
 package org.example.ui;
 
-import org.example.model.Admin;
-import org.example.model.Espectador;
-import org.example.model.DB;
-import org.example.model.UtilizadorRegistado;
+import org.example.model.*;
 import org.example.utils.Utils;
 
 public class MenuInicial {
@@ -13,6 +10,9 @@ public class MenuInicial {
     public MenuInicial(DB imdb) {
         this.imdb = imdb;
     }
+
+    /// //////// CONSTRUTOR DE SERIE DE TESTE
+    Serie serie = new Serie("Stranger things", "muito fixe", "2008");
 
     public void run() {
         do {
@@ -28,6 +28,9 @@ public class MenuInicial {
             System.out.println("#                                               #");
             System.out.println("#################################################");
             System.out.println();
+
+            /// // EXIBIR SERIE DE TESTE
+            serie.exibeFicha();
 
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 

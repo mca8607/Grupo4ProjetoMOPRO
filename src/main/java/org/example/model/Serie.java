@@ -13,4 +13,7 @@ public class Serie extends Recurso{
     public void adicionarTemporadas(Temporada t) {
         this.temporadas.add(t);
     }
+    public void exibeFicha(){
+        System.out.println(getTitulo());
+    }
 }
