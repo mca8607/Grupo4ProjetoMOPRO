@@ -1,8 +1,21 @@
 package org.example.model;
 
-public class Temporada extends Serie{
+import java.util.ArrayList;
+import java.util.List;
+
+public class Temporada{
+    private List<Episodios> episodios;
 
     public Temporada (String titulo, String descricao, String anoFinal) {
-        super (titulo,descricao,anoFinal);
+        this.episodios = new ArrayList<>();
+
+    }
+
+    public List<Episodios> getEpisodios(){
+        return episodios;
+    }
+
+    public void adicionarEpisodio(Episodios e) {
+        this.episodios.add(e);
     }
 }

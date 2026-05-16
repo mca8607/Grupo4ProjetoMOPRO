@@ -1,8 +1,15 @@
 package org.example.model;
 
-public class Episodios extends Serie{
+public class Episodios {
+    private String titulo;
 
-    public Episodios (String titulo, String descricao, String anoFinal) {
-        super (titulo,descricao,anoFinal);
+    public Episodios(String titulo){
+        this.titulo=titulo;
+
     }
+    public String getTitulo(){
+        return titulo;
+    }
+
+
 }
