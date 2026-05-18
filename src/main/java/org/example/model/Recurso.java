@@ -10,5 +10,17 @@ public abstract class Recurso {
         this.descricao = descricao;
         this.dataLancamento = dataLancamento;
     }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public String getDataLancamento() {
+        return dataLancamento;
+    }
 }
 
