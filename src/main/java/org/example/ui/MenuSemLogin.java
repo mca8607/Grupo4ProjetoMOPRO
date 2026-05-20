@@ -3,7 +3,6 @@ package org.example.ui;
 import org.example.model.DB;
 import org.example.utils.Utils;
 
-
 public class MenuSemLogin {
     private DB imdb;
     private String opcao;
@@ -16,11 +15,11 @@ public class MenuSemLogin {
         do {
             System.out.println("\n\n");
             System.out.println("#################################################");
-            System.out.println("#                     MENU                      #");
+            System.out.println("#                MENU VISITANTE                 #");
             System.out.println("#################################################");
             System.out.println("#                                               #");
             System.out.println("#  1. Listar atores                             #");
-            // Completar
+            System.out.println("#  2. Listar filmes                             #"); // Nova opção
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
@@ -33,11 +32,16 @@ public class MenuSemLogin {
                 case "1":
                     System.out.println(imdb.listarAtores());
                     break;
-                // Completar
+                case "2":
+                    System.out.println(imdb.listarFilmes()); // Chama o método na DB
+                    break;
+                case "0":
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    break;
             }
         }
         while (!opcao.equals("0"));
     }
 }
-
-
