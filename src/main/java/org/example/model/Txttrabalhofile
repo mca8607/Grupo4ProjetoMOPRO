@@ -1,0 +1,263 @@
+package org.example.model;
+
+public class Admin extends UtilizadorRegistado {
+    public Admin(String email, String nome, String password) {
+        super(email, nome, password);
+    }
+}
+package org.example.model;
+
+import org.example.utils.Data;
+
+public class Ator {
+    private String nome;
+    private Data dataNascimento;
+
+    public Ator(String nome, Data dataNascimento) {
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+    }
+
+    @Override
+    public String toString() {
+        return nome + " [" + dataNascimento + "]";
+    }
+
+    public boolean temNome(String nome) {return this.nome.equals(nome);}
+}
+package org.example.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DB {
+    private String url;
+
+    private List<UtilizadorRegistado> lstUtilizadores;
+    private List<Ator> lstAtores;
+    // Completar
+
+    public DB(String url) {
+        this.url = url;
+        this.lstAtores = new ArrayList<Ator>();
+        this.lstUtilizadores = new ArrayList<>();
+        // Completar
+    }
+
+    public void adicionarAtor(Ator a) {
+        this.lstAtores.add(a);
+    }
+
+    public void adicionarUtilizador(UtilizadorRegistado u) {
+        this.lstUtilizadores.add(u);
+    }
+
+    public void removerAtor(Ator ator) {
+        lstAtores.remove(ator);
+    }
+
+    public UtilizadorRegistado pesquisaUtilizador(String username) {
+        for (UtilizadorRegistado u : lstUtilizadores) {
+            if (u.temNome(username)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public UtilizadorRegistado login(String username, String password) {
+        UtilizadorRegistado ur = pesquisaUtilizador(username);
+        if (ur != null && ur.temPassord(password))
+            return ur;
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("=== Estado atual da DB ===").append("\n");
+        sb.append("(").append(url).append(")");
+        sb.append(listarUtilizadores());
+        sb.append(listarAtores());
+        // Completar
+        return sb.toString();
+    }
+
+    public String listarUtilizadores() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nLista de Utilizadores:");
+        if (lstUtilizadores.isEmpty()) {
+            sb.append(" (VAZIA)\n");
+        } else {
+            for (UtilizadorRegistado u : lstUtilizadores) {
+                sb.append("\n\t- ").append(u).append(u instanceof Admin ? " (admin)" : "");
+            }
+        }
+        return sb.toString();
+    }
+
+    public String listarAtores() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nLista de Atores:");
+        if (lstAtores.isEmpty()) {
+            sb.append(" (VAZIA)\n");
+        } else {
+            for (Ator ator : lstAtores) {
+                sb.append("\n\t- ").append(ator);
+            }
+        }
+        return sb.toString();
+    }
+
+    public Ator pesquisaAtor(String nome) {
+        for (Ator a : lstAtores) {
+            if (a.temNome(nome)) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    // Completar com outras funcionalidades
+}
+package org.example.model;
+
+public class Episodios {
+    private String titulo;
+
+    public Episodios(String titulo){
+        this.titulo=titulo;
+
+    }
+    public String getTitulo(){
+        return titulo;
+    }
+
+
+}
+package org.example.model;
+
+public class Espectador extends UtilizadorRegistado {
+
+    public Espectador(String email, String nome, String password) {
+        super(email, nome, password);
+    }
+}
+package org.example.model;
+
+public class Filme extends Recurso {
+    public Filme (String titulo, String duracao, String dataDeLancamento){
+        super(titulo, duracao, dataDeLancamento);
+
+    }
+}
+package org.example.model;
+
+public interface MarcavelComoVisto {
+    boolean isVisto(Espectador espectador);
+
+    void marcarComoVisto(Espectador espectador) throws Exception;
+}
+package org.example.model;
+
+public abstract class Media {
+    private int duracao;
+
+    public Media(int duracao) {
+        this.duracao = duracao;
+    }
+}
+package org.example.model;
+
+public interface Pesquisavel {
+    boolean correspondePesquisa(String texto);
+}
+package org.example.model;
+
+ public abstract class Recurso {
+     private String titulo;
+     private String descricao;
+     private String dataLancamento;
+
+     public Recurso(String titulo, String descricao, String dataLancamento) {
+         this.titulo = titulo;
+         this.descricao = descricao;
+         this.dataLancamento = dataLancamento;
+     }
+
+     public String getTitulo() {
+         return titulo;
+     }
+
+     public String getDescricao() {
+         return descricao;
+     }
+
+     public String getDataLancamento() {
+         return dataLancamento;
+     }
+ }
+ package org.example.model;
+
+ import java.util.ArrayList;
+ import java.util.List;
+
+ public class Serie extends Recurso{
+     private List<Temporada> temporadas;
+     public Serie (String titulo, String descricao, String anoFinal) {
+         super(titulo, descricao, anoFinal);
+         this.temporadas = new ArrayList<>();
+     }
+
+     public void adicionarTemporadas(Temporada t) {
+         this.temporadas.add(t);
+     }
+     public void exibeFicha(){
+         System.out.println(getTitulo());
+     }
+ }
+package org.example.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Temporada{
+    private List<Episodios> episodios;
+
+    public Temporada (String titulo, String descricao, String anoFinal) {
+        this.episodios = new ArrayList<>();
+
+    }
+
+    public List<Episodios> getEpisodios(){
+        return episodios;
+    }
+
+    public void adicionarEpisodio(Episodios e) {
+        this.episodios.add(e);
+    }
+}
+package org.example.model;
+
+public abstract class UtilizadorRegistado{
+    private String email;
+    private String nome;
+    private String password;
+
+    public UtilizadorRegistado(String email, String nome, String password) {
+        this.email = email;
+        this.nome = nome;
+        this.password = password;
+    }
+
+    public boolean temPassord(String pass){
+        return password.equals(pass);
+    }
+
+    @Override
+    public String toString() {
+        return nome + " <" + email + ">";
+    }
+
+    public boolean temNome(String username) { return username.equals(nome); }
+}
+
