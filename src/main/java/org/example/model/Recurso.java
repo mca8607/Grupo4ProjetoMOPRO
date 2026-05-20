@@ -11,16 +11,10 @@ public abstract class Recurso {
         this.dataLancamento = dataLancamento;
     }
 
-    public String getTitulo() {
-        return titulo;
-    }
+    public String getTitulo() { return titulo; }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public String getDataLancamento() {
-        return dataLancamento;
+    @Override
+    public String toString() {
+        return String.format("%s (%s) - %s", titulo, dataLancamento, descricao);
     }
 }
-

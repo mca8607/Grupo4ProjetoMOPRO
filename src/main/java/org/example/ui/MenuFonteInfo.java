@@ -30,8 +30,8 @@ public class MenuFonteInfo {
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
             switch (opcao) {
                 case "1":
-                    imdb = construir();
-                    System.out.println("Carregada DB com dados demo");
+                    popularDadosDemo();
+                    System.out.println("Carregada DB com dados demo (Atores, Utilizadores e Filmes)");
                     System.out.println("----------------------------");
                     System.out.println("| CREDENCIAIS DEMO:        |");
                     System.out.println("----------------------------");
@@ -41,59 +41,59 @@ public class MenuFonteInfo {
                     System.out.println("|    - ana/abc             |");
                     System.out.println("|    - pedro/qwerty        |");
                     System.out.println("----------------------------");
+
+                    // Após carregar, avança para o menu inicial
+                    MenuInicial uiMenu = new MenuInicial(imdb);
+                    uiMenu.run();
                     break;
                 case "2":
-                    // Completar
+                    System.out.println("Funcionalidade de ficheiro ainda não implementada.");
                     break;
-                // Completar
-            }
-            if (imdb != null) {
-                System.out.println(imdb);
-                MenuInicial uiMenu = new MenuInicial(imdb);
-                uiMenu.run();
+                case "0":
+                    System.out.println("A sair...");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
             }
         } while (!opcao.equals("0"));
     }
 
-    private static DB construir() {
-        // Construção da empresa
-        DB imdb = new DB("www.imdb.com");
+    private void popularDadosDemo() {
+        // 1. Utilizadores
+        criarAdmin("admin@example.com", "admin", "admin");
+        criarEspectador("ana@example.com", "ana", "abc");
+        criarEspectador("pedro@example.com", "pedro", "qwerty");
 
-        // Utilizadores
-        Admin admin = criarAdmin(imdb, "admin@example.com", "admin", "admin");
-        Espectador ana = criarEspectador("ana@example.com", "ana", "abc", imdb);
-        Espectador pedro = criarEspectador("pedro@example.com", "pedro", "qwerty", imdb);
+        // 2. Atores
+        criarAtor("Pierce Brosnan", new Data(1953, 5, 16));
+        criarAtor("Tom Hardy", new Data(1977, 9, 15));
+        criarAtor("Helen Mirren", new Data(1945, 7, 26));
 
-        // Atores
-        Ator pierceBrosnan = criarAtor(imdb, "Pierce Brosnan", new Data(1953, 5, 16));
-        Ator tomHardy = criarAtor(imdb, "Tom Hardy", new Data(1977, 9, 15));
-        Ator helenMirren = criarAtor(imdb, "Helen Mirren", new Data(1945, 7, 26));
-        Ator jonathanPrice = criarAtor(imdb, "Jonathan Price", new Data(1947, 6, 1));
-        Ator cillianMurphy = criarAtor(imdb, "Cillian Murphy", new Data(1976, 5, 25));
+        // 3. Filmes (Nova Hierarquia)
+        imdb.adicionarRecurso(new Filme("O Padrinho", "Drama criminal épico", "1972", "175 min"));
+        imdb.adicionarRecurso(new Filme("Inception", "Thriller de ficção científica", "2010", "148 min"));
+        imdb.adicionarRecurso(new Filme("The Dark Knight", "Ação/Drama", "2008", "152 min"));
 
-        // Completar
+        // 4. Séries
+        Serie strangerThings = new Serie("Stranger Things", "Suspense e Ficção", "2025");
+        imdb.adicionarRecurso(strangerThings);
 
-        return imdb;
+        System.out.println("Dados demo carregados com sucesso.");
     }
 
-    private static Ator criarAtor(DB imdb, String nome, Data dataNascimento) {
+    private void criarAtor(String nome, Data dataNascimento) {
         Ator ator = new Ator(nome, dataNascimento);
         imdb.adicionarAtor(ator);
-        System.out.println("Ator '" + nome + "' criado com sucesso");
-        return ator;
+        System.out.println("Ator '" + nome + "' criado.");
     }
 
-    private static Espectador criarEspectador(String email, String nome, String password, DB imdb) {
+    private void criarEspectador(String email, String nome, String password) {
         Espectador espectador = new Espectador(email, nome, password);
         imdb.adicionarUtilizador(espectador);
-        System.out.println("Espectador '" + nome + "' criado com sucesso");
-        return espectador;
     }
 
-    private static Admin criarAdmin(DB imdb, String email, String nome, String password) {
+    private void criarAdmin(String email, String nome, String password) {
         Admin admin = new Admin(email, nome, password);
         imdb.adicionarUtilizador(admin);
-        System.out.println("Administrador '" + nome + "' criado com sucesso");
-        return admin;
     }
 }
