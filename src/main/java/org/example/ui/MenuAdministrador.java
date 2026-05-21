@@ -33,7 +33,25 @@ public class MenuAdministrador {
                     MenuGerirAtores uiAtores = new MenuGerirAtores(imdb);
                     uiAtores.run();
                     break;
-                // Completar
+                case "2":
+                    MenuGerirFilmes uiFilmes = new MenuGerirFilmes(imdb);
+                    uiFilmes.run();
+                    break;
+                case "3":
+                    MenuGerirSeries uiSeries = new MenuGerirSeries(imdb);
+                    uiSeries.run();
+                    break;
+                case "4":
+                    System.out.println(imdb.listarUtilizadores());
+                    break;
+                case "5":
+                    MenuPesquisa uiPesquisa = new MenuPesquisa(imdb);
+                    uiPesquisa.run();
+                    break;
+                case "0":
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
             }
         }
         while (!opcao.equals("0"));

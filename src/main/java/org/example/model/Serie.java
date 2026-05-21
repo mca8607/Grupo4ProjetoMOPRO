@@ -16,4 +16,8 @@ public class Serie extends Recurso{
     public void exibeFicha(){
         System.out.println(getTitulo());
     }
+
+    public List<Temporada> getTemporadas() {
+        return temporadas;
+    }
 }
