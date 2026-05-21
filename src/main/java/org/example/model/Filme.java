@@ -14,7 +14,7 @@ public class Filme extends Recurso {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false; // Garante que respeita a igualdade da classe Recurso
+        if (!super.equals(o)) return false;
         Filme filme = (Filme) o;
         return Objects.equals(duracao, filme.duracao);
     }
