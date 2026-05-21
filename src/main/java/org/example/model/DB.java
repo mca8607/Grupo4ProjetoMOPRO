@@ -112,6 +112,22 @@ public class DB {
         return temSeries ? sb.toString() : "\nLista de Séries: (VAZIA)";
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public List<UtilizadorRegistado> getLstUtilizadores() {
+        return lstUtilizadores;
+    }
+
+    public List<Ator> getLstAtores() {
+        return lstAtores;
+    }
+
+    public List<Recurso> getLstRecursos() {
+        return lstRecursos;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("=== Estado atual da DB ===").append("\n");
