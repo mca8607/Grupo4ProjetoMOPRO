@@ -1,5 +1,7 @@
 package org.example.model;
 
+import java.util.Objects;
+
 public class Filme extends Recurso {
     private String duracao;
 
@@ -7,6 +9,21 @@ public class Filme extends Recurso {
         super(titulo, descricao, dataLancamento);
         this.duracao = duracao;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false; // Garante que respeita a igualdade da classe Recurso
+        Filme filme = (Filme) o;
+        return Objects.equals(duracao, filme.duracao);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), duracao);
+    }
+
 
     @Override
     public String toString() {
