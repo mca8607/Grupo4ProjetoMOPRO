@@ -2,8 +2,14 @@ package org.example.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class DB {
+public class DB implements Serializable{
     private String url;
     private List<UtilizadorRegistado> lstUtilizadores;
     private List<Ator> lstAtores;
@@ -69,7 +75,6 @@ public class DB {
             sb.append(" (VAZIA)\n");
         } else {
             for (UtilizadorRegistado u : lstUtilizadores) {
-                // Identifica se é Admin ou Espectador na listagem
                 sb.append("\n\t- ").append(u).append(u instanceof Admin ? " (admin)" : "");
             }
         }
@@ -111,6 +116,20 @@ public class DB {
         }
         return temSeries ? sb.toString() : "\nLista de Séries: (VAZIA)";
     }
+
+    public void guardar(String ficheiro) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ficheiro));
+        oos.writeObject(this);
+        oos.close();
+    }
+
+    public static DB carregar(String ficheiro) throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ficheiro));
+        DB db = (DB) ois.readObject();
+        ois.close();
+        return db;
+    }
+
 
     public String getUrl() {
         return url;

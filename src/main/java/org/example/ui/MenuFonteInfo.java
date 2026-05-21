@@ -8,6 +8,8 @@ public class MenuFonteInfo {
     private DB imdb;
     private String opcao;
 
+    private static final String FICHEIRO = "imdb.dat";
+
     public MenuFonteInfo(DB imdb) {
         this.imdb = imdb;
     }
@@ -42,7 +44,6 @@ public class MenuFonteInfo {
                     System.out.println("|    - pedro/qwerty        |");
                     System.out.println("----------------------------");
 
-                    // Após carregar, avança para o menu inicial
                     MenuInicial uiMenu = new MenuInicial(imdb);
                     uiMenu.run();
                     break;
@@ -58,6 +59,28 @@ public class MenuFonteInfo {
         } while (!opcao.equals("0"));
     }
 
+    private void guardarEmFicheiro() {
+        try {
+            imdb.guardar(FICHEIRO);
+            System.out.println("Dados guardados com sucesso em '" + FICHEIRO + "'.");
+        } catch (Exception e) {
+            System.out.println("Erro ao guardar: " + e.getMessage());
+        }
+    }
+
+    private void carregarDeFicheiro() {
+        try {
+            imdb = DB.carregar(FICHEIRO);
+            System.out.println("Dados carregados com sucesso de '" + FICHEIRO + "'.");
+            MenuInicial uiMenu = new MenuInicial(imdb);
+            uiMenu.run();
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar: " + e.getMessage());
+            System.out.println("(O ficheiro pode não existir ainda. Carregue dados demo primeiro e guarde.)");
+        }
+    }
+
+
     private void popularDadosDemo() {
         // 1. Utilizadores
         criarAdmin("admin@example.com", "admin", "admin");
@@ -69,7 +92,7 @@ public class MenuFonteInfo {
         criarAtor("Tom Hardy", new Data(1977, 9, 15));
         criarAtor("Helen Mirren", new Data(1945, 7, 26));
 
-        // 3. Filmes (Nova Hierarquia)
+        // 3. Filmes
         imdb.adicionarRecurso(new Filme("O Padrinho", "Drama criminal épico", "1972", "175 min"));
         imdb.adicionarRecurso(new Filme("Inception", "Thriller de ficção científica", "2010", "148 min"));
         imdb.adicionarRecurso(new Filme("The Dark Knight", "Ação/Drama", "2008", "152 min"));
