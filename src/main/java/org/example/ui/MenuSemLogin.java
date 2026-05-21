@@ -19,7 +19,8 @@ public class MenuSemLogin {
             System.out.println("#################################################");
             System.out.println("#                                               #");
             System.out.println("#  1. Listar atores                             #");
-            System.out.println("#  2. Listar filmes                             #"); // Nova opção
+            System.out.println("#  2. Listar filmes                             #");
+            System.out.println("#  3. Pesquisar (Filmes/Atores)                 #"); // Nova opção
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
@@ -33,7 +34,12 @@ public class MenuSemLogin {
                     System.out.println(imdb.listarAtores());
                     break;
                 case "2":
-                    System.out.println(imdb.listarFilmes()); // Chama o método na DB
+                    System.out.println(imdb.listarFilmes());
+                    break;
+                case "3":
+                    // Chama o novo menu de pesquisa
+                    MenuPesquisa pesquisaUI = new MenuPesquisa(imdb);
+                    pesquisaUI.run();
                     break;
                 case "0":
                     break;
