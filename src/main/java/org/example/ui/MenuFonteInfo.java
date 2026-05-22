@@ -3,6 +3,7 @@ package org.example.ui;
 import org.example.model.*;
 import org.example.utils.Data;
 import org.example.utils.Utils;
+import java.io.IOException;
 
 public class MenuFonteInfo {
     private DB imdb;
@@ -23,8 +24,9 @@ public class MenuFonteInfo {
             System.out.println("#                                               #");
             System.out.println("#  1. Carregar dados demo                       #");
             System.out.println("#  2. Carregar de ficheiro                      #");
+            System.out.println("#  3. Guardar em ficheiro                       #");
             System.out.println("#                                               #");
-            System.out.println("#  0. Sair                                      #");
+            System.out.println("#  0. Avançar para o Menu Principal             #");
             System.out.println("#                                               #");
             System.out.println("#################################################");
             System.out.println();
@@ -33,50 +35,51 @@ public class MenuFonteInfo {
             switch (opcao) {
                 case "1":
                     popularDadosDemo();
-                    System.out.println("Carregada DB com dados demo (Atores, Utilizadores e Filmes)");
-                    System.out.println("----------------------------");
-                    System.out.println("| CREDENCIAIS DEMO:        |");
-                    System.out.println("----------------------------");
-                    System.out.println("| -> Admin:                |");
-                    System.out.println("|    - admin/admin         |");
-                    System.out.println("| -> Espectadores:         |");
-                    System.out.println("|    - ana/abc             |");
-                    System.out.println("|    - pedro/qwerty        |");
-                    System.out.println("----------------------------");
-
-                    MenuInicial uiMenu = new MenuInicial(imdb);
-                    uiMenu.run();
+                    System.out.println("Dados demo carregados com sucesso no sistema.");
                     break;
                 case "2":
-                    System.out.println("Funcionalidade de ficheiro ainda não implementada.");
+                    carregarDeFicheiro();
+                    break;
+                case "3":
+                    guardarEmFicheiro();
                     break;
                 case "0":
-                    System.out.println("A sair...");
+                    MenuInicial menuInicial = new MenuInicial(this.imdb);
+                    menuInicial.run();
                     break;
                 default:
                     System.out.println("Opção inválida!");
+                    break;
             }
         } while (!opcao.equals("0"));
     }
 
     private void guardarEmFicheiro() {
         try {
-            imdb.guardar(FICHEIRO);
-            System.out.println("Dados guardados com sucesso em '" + FICHEIRO + "'.");
-        } catch (Exception e) {
-            System.out.println("Erro ao guardar: " + e.getMessage());
+            this.imdb.guardar(FICHEIRO);
+            System.out.println("Estado atual da plataforma guardado com sucesso em '" + FICHEIRO + "'.");
+        } catch (IOException e) {
+            System.out.println("ERRO: Falha ao guardar os dados no ficheiro: " + e.getMessage());
         }
     }
 
     private void carregarDeFicheiro() {
         try {
-            imdb = DB.carregar(FICHEIRO);
-            System.out.println("Dados carregados com sucesso de '" + FICHEIRO + "'.");
-            MenuInicial uiMenu = new MenuInicial(imdb);
-            uiMenu.run();
-        } catch (Exception e) {
-            System.out.println("Erro ao carregar: " + e.getMessage());
-            System.out.println("(O ficheiro pode não existir ainda. Carregue dados demo primeiro e guarde.)");
+            // Recarrega o objeto DB a partir do ficheiro serializado
+            DB carregado = DB.carregar(FICHEIRO);
+
+            // Limpa as listas em memória e restaura os dados guardados
+            this.imdb.getLstAtores().clear();
+            this.imdb.getLstUtilizadores().clear();
+            this.imdb.getLstRecursos().clear();
+
+            this.imdb.getLstAtores().addAll(carregado.getLstAtores());
+            this.imdb.getLstUtilizadores().addAll(carregado.getLstUtilizadores());
+            this.imdb.getLstRecursos().addAll(carregado.getLstRecursos());
+
+            System.out.println("Dados carregados com sucesso a partir de '" + FICHEIRO + "'.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("ERRO: Não foi possível carregar o ficheiro. Pode ainda não ter sido criado. (" + e.getMessage() + ")");
         }
     }
 
