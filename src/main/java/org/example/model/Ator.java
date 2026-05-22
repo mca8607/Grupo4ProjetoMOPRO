@@ -11,6 +11,21 @@ public class Ator implements Pesquisavel {
         this.dataNascimento = dataNascimento;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public int getNumFilmes(DB db) {
+        int count = 0;
+        for (Recurso r : db.getLstRecursos()) {
+            if (r instanceof Filme) {
+                if (r.correspondePesquisa(this.nome)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 
     @Override
     public boolean correspondePesquisa(String texto) {

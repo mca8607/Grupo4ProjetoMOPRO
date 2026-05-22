@@ -19,7 +19,10 @@ public class MenuAdministrador {
             System.out.println("#################################################");
             System.out.println("#                                               #");
             System.out.println("#  1. Gerir atores                              #");
-            // Completar
+            System.out.println("#  2. Gerir filmes                              #");
+            System.out.println("#  3. Gerir séries                              #");
+            System.out.println("#  4. Listar utilizadores brutos                #");
+            System.out.println("#  5. Consultar listagens ordenadas             #");
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
@@ -45,8 +48,8 @@ public class MenuAdministrador {
                     System.out.println(imdb.listarUtilizadores());
                     break;
                 case "5":
-                    MenuPesquisa uiPesquisa = new MenuPesquisa(imdb);
-                    uiPesquisa.run();
+                    MenuListagens uiListagens = new MenuListagens(imdb);
+                    uiListagens.run();
                     break;
                 case "0":
                     break;

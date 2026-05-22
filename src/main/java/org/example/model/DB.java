@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class DB implements Serializable{
     private String url;
     private List<UtilizadorRegistado> lstUtilizadores;
     private List<Ator> lstAtores;
-    private List<Recurso> lstRecursos; // Lista central para Filmes e Séries
+    private List<Recurso> lstRecursos;
 
     public DB(String url) {
         this.url = url;
@@ -26,11 +28,9 @@ public class DB implements Serializable{
     public void adicionarAtor(Ator a) {
         this.lstAtores.add(a);
     }
-
     public void adicionarUtilizador(UtilizadorRegistado u) {
         this.lstUtilizadores.add(u);
     }
-
     public void adicionarRecurso(Recurso r) {
         this.lstRecursos.add(r);
     }
@@ -52,7 +52,6 @@ public class DB implements Serializable{
 
     public UtilizadorRegistado login(String username, String password) {
         UtilizadorRegistado ur = pesquisaUtilizador(username);
-        // Verifica se o utilizador existe e se a password coincide
         if (ur != null && ur.temPassord(password)) {
             return ur;
         }
@@ -116,6 +115,95 @@ public class DB implements Serializable{
         }
         return temSeries ? sb.toString() : "\nLista de Séries: (VAZIA)";
     }
+
+
+    private List<Filme> extrairFilmes() {
+        List<Filme> filmes = new ArrayList<>();
+        for (Recurso r : lstRecursos) {
+            if (r instanceof Filme) {
+                filmes.add((Filme) r);
+            }
+        }
+        return filmes;
+    }
+
+    public String listarFilmesPorTitulo() {
+        List<Filme> filmes = extrairFilmes();
+        Collections.sort(filmes, new Comparator<Filme>() {
+            @Override
+            public int compare(Filme f1, Filme f2) {
+                return f1.getTitulo().compareToIgnoreCase(f2.getTitulo());
+            }
+        });
+
+        StringBuilder sb = new StringBuilder("\n--- Filmes Ordenados por Título ---");
+        for (Filme f : filmes) sb.append("\n\t- ").append(f.getTitulo()).append(" (").append(f).append(")");
+        return sb.toString();
+    }
+
+    public String listarFilmesPorClassificacaoMedia() {
+        List<Filme> filmes = extrairFilmes();
+        Collections.sort(filmes, new Comparator<Filme>() {
+            @Override
+            public int compare(Filme f1, Filme f2) {
+                return Double.compare(f2.getClassificacaoMedia(), f1.getClassificacaoMedia());
+            }
+        });
+
+        StringBuilder sb = new StringBuilder("\n--- Filmes Ordenados por Classificação Média ---");
+        for (Filme f : filmes) {
+            sb.append(String.format("\n\t- [%.1f/10] %s", f.getClassificacaoMedia(), f.getTitulo()));
+        }
+        return sb.toString();
+    }
+
+    public String listarAtoresPorNome() {
+        List<Ator> atores = new ArrayList<>(lstAtores);
+        Collections.sort(atores, new Comparator<Ator>() {
+            @Override
+            public int compare(Ator a1, Ator a2) {
+                return a1.getNome().compareToIgnoreCase(a2.getNome());
+            }
+        });
+
+        StringBuilder sb = new StringBuilder("\n--- Atores Ordenados por Nome ---");
+        for (Ator a : atores) sb.append("\n\t- ").append(a);
+        return sb.toString();
+    }
+
+    public String listarAtoresPorNumFilmes() {
+        List<Ator> atores = new ArrayList<>(lstAtores);
+        final DB self = this;
+        Collections.sort(atores, new Comparator<Ator>() {
+            @Override
+            public int compare(Ator a1, Ator a2) {
+                return Integer.compare(a2.getNumFilmes(self), a1.getNumFilmes(self));
+            }
+        });
+
+        StringBuilder sb = new StringBuilder("\n--- Atores Ordenados por Número de Filmes ---");
+        for (Ator a : atores) {
+            sb.append("\n\t- ").append(a.getNome()).append(" | Filmes: ").append(a.getNumFilmes(self));
+        }
+        return sb.toString();
+    }
+
+    public String listarUtilizadoresPorFilmesVistos() {
+        List<UtilizadorRegistado> utilizadores = new ArrayList<>(lstUtilizadores);
+        Collections.sort(utilizadores, new Comparator<UtilizadorRegistado>() {
+            @Override
+            public int compare(UtilizadorRegistado u1, UtilizadorRegistado u2) {
+                return Integer.compare(u2.getNumFilmesVistos(), u1.getNumFilmesVistos());
+            }
+        });
+
+        StringBuilder sb = new StringBuilder("\n--- Utilizadores Ordenados por Mais Filmes Vistos ---");
+        for (UtilizadorRegistado u : utilizadores) {
+            sb.append("\n\t- ").append(u.getNome()).append(" | Vistos: ").append(u.getNumFilmesVistos()).append(" filmes");
+        }
+        return sb.toString();
+    }
+
 
     public void guardar(String ficheiro) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ficheiro));
