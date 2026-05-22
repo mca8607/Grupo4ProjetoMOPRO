@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Serie extends Recurso{
     private List<Temporada> temporadas;
-    public Serie (String titulo, String descricao, String anoFinal) {
-        super(titulo, descricao, anoFinal);
+    public Serie (String titulo, String descricao, String anoFinal, List<Genero> generos) {
+        super(titulo, descricao, anoFinal, generos);
         this.temporadas = new ArrayList<>();
     }
 

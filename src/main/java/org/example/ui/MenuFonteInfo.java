@@ -63,6 +63,7 @@ public class MenuFonteInfo {
         }
     }
 
+
     private void carregarDeFicheiro() {
         try {
             // Recarrega o objeto DB a partir do ficheiro serializado

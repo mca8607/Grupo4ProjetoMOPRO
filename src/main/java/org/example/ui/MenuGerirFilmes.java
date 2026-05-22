@@ -4,6 +4,9 @@ import org.example.model.DB;
 import org.example.model.Filme;
 import org.example.model.Recurso;
 import org.example.utils.Utils;
+import org.example.model.Genero;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MenuGerirFilmes {
@@ -59,7 +62,41 @@ public class MenuGerirFilmes {
         String ano = Utils.readLineFromConsole("Ano de lançamento: ");
         String duracao = Utils.readLineFromConsole("Duração (ex: 120 min): ");
 
-        Filme novo = new Filme(titulo, descricao, ano, duracao);
+
+        List<Genero> generosEscolhidos = new ArrayList<>();
+        boolean adicionarMais = true;
+
+        do {
+            System.out.println("\nGéneros Disponíveis:");
+            Genero[] valores = Genero.values(); // Vai buscar todas as opções do enum
+            for (int i = 0; i < valores.length; i++) {
+                System.out.println((i + 1) + ". " + valores[i]);
+            }
+
+            int escolha = Utils.readIntFromConsole("Selecione o número do género: ");
+
+            if (escolha >= 1 && escolha <= valores.length) {
+                Genero selecionado = valores[escolha - 1];
+                if (!generosEscolhidos.contains(selecionado)) {
+                    generosEscolhidos.add(selecionado);
+                    System.out.println("Género '" + selecionado + "' adicionado.");
+                } else {
+                    System.out.println("Esse género já foi selecionado anteriormente.");
+                }
+            } else {
+                System.out.println("Opção inválida!");
+            }
+
+            // O enunciado exige pelo menos um género, por isso só validamos a saída se já houver algum selecionado
+            if (!generosEscolhidos.isEmpty()) {
+                adicionarMais = Utils.confirma("Deseja adicionar mais algum género? (S/N): ");
+            } else {
+                System.out.println("É obrigatório associar pelo menos um género ao filme.");
+            }
+        } while (adicionarMais || generosEscolhidos.isEmpty());
+
+
+        Filme novo = new Filme(titulo, descricao, ano, duracao, generosEscolhidos);
         System.out.println("\nFilme a adicionar: " + novo);
 
         if (Utils.confirma("Confirma? (S/N)")) {

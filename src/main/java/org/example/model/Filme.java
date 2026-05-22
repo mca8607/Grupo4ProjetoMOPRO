@@ -9,8 +9,8 @@ public class Filme extends Recurso implements MarcavelComoVisto {
     private List<Classificacao> classificacoes;
     private List<Espectador> espectadoresQueViram;
 
-    public Filme(String titulo, String descricao, String dataLancamento, String duracao) {
-        super(titulo, descricao, dataLancamento);
+    public Filme(String titulo, String descricao, String dataLancamento, String duracao, List<Genero> generos) {
+        super(titulo, descricao, dataLancamento, generos);
         this.duracao = duracao;
         this.classificacoes = new ArrayList<>();
         this.espectadoresQueViram = new ArrayList<>();

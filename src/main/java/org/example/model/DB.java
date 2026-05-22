@@ -31,8 +31,15 @@ public class DB implements Serializable{
     public void adicionarUtilizador(UtilizadorRegistado u) {
         this.lstUtilizadores.add(u);
     }
-    public void adicionarRecurso(Recurso r) {
-        this.lstRecursos.add(r);
+    public void adicionarRecurso(Recurso novoRecurso) {
+        for (Recurso r : lstRecursos) {
+            if (r.getTitulo().equalsIgnoreCase(novoRecurso.getTitulo()) &&
+                    r.getDataLancamento().equals(novoRecurso.getDataLancamento())) {
+                System.out.println("ERRO: Já existe um filme/série com o título \"" + r.getTitulo() + "\" para o ano " + r.getDataLancamento() + ".");
+                return;
+            }
+        }
+        this.lstRecursos.add(novoRecurso);
     }
 
     // --- Métodos de Remoção ---
