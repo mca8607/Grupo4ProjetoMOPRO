@@ -11,9 +11,6 @@ public class MenuInicial {
         this.imdb = imdb;
     }
 
-    /// //////// CONSTRUTOR DE SERIE DE TESTE
-    Serie serie = new Serie("Stranger things", "muito fixe", "2008");
-
     public void run() {
         do {
             System.out.println("\n\n");
@@ -28,9 +25,6 @@ public class MenuInicial {
             System.out.println("#                                               #");
             System.out.println("#################################################");
             System.out.println();
-
-            /// // EXIBIR SERIE DE TESTE
-            serie.exibeFicha();
 
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 
@@ -58,6 +52,7 @@ public class MenuInicial {
                         }
                     } catch (Exception e) {
                         System.out.println("ERRO: " + e.getMessage());
+                        ur = null;
                     }
                 }
             } else if (!opcao.equals("0")) {

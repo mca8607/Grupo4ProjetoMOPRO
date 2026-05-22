@@ -1,11 +1,10 @@
 package org.example.ui;
 
-import org.example.model.DB;
-import org.example.model.Episodios;
-import org.example.model.Recurso;
-import org.example.model.Serie;
-import org.example.model.Temporada;
+import org.example.model.*;
 import org.example.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuGerirSeries {
     private DB imdb;
@@ -62,8 +61,14 @@ public class MenuGerirSeries {
         String titulo = Utils.readLineFromConsole("Título: ");
         String descricao = Utils.readLineFromConsole("Descrição: ");
         String ano = Utils.readLineFromConsole("Ano de lançamento: ");
+        List<Genero> generos = escolherGeneros();
 
-        Serie nova = new Serie(titulo, descricao, ano);
+        if (generos.isEmpty()) {
+            System.out.println("Uma série deve ter pelo menos um género. Operação cancelada.");
+            return;
+        }
+
+        Serie nova = new Serie(titulo, descricao, ano, generos);
         System.out.println("\nSérie a adicionar: " + nova);
 
         if (Utils.confirma("Confirma? (S/N)")) {
@@ -136,5 +141,40 @@ public class MenuGerirSeries {
         }
         System.out.println("Série não encontrada.");
         return null;
+    }
+
+
+    private List<Genero> escolherGeneros() {
+        Genero[] todos = Genero.values();
+        List<Genero> escolhidos = new ArrayList<>();
+        boolean adicionarMais = true;
+
+        do {
+            System.out.println("\nGéneros disponíveis:");
+            for (int i = 0; i < todos.length; i++) {
+                System.out.println("  " + (i + 1) + ". " + todos[i]);
+            }
+
+            int escolha = Utils.readIntFromConsole("Selecione o número do género: ");
+            if (escolha >= 1 && escolha <= todos.length) {
+                Genero selecionado = todos[escolha - 1];
+                if (!escolhidos.contains(selecionado)) {
+                    escolhidos.add(selecionado);
+                    System.out.println("Género '" + selecionado + "' adicionado.");
+                } else {
+                    System.out.println("Esse género já foi selecionado.");
+                }
+            } else {
+                System.out.println("Opção inválida.");
+            }
+
+            if (!escolhidos.isEmpty()) {
+                adicionarMais = Utils.confirma("Deseja adicionar mais algum género? (S/N): ");
+            } else {
+                System.out.println("É obrigatório associar pelo menos um género.");
+            }
+        } while (adicionarMais || escolhidos.isEmpty());
+
+        return escolhidos;
     }
 }
