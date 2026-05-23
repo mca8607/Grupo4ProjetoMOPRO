@@ -26,7 +26,6 @@ public class AppTest {
     public void setUp() {
         imdb = new DB("www.imdb.com");
 
-        // Utilizadores
         ana = new Espectador("ana@email.com", "ana", "abc");
         pedro = new Espectador("pedro@email.com", "pedro", "qwerty");
         admin = new Admin("admin@email.com", "admin", "admin");
@@ -34,7 +33,6 @@ public class AppTest {
         imdb.adicionarUtilizador(pedro);
         imdb.adicionarUtilizador(admin);
 
-        // Filmes
         List<Genero> generos1 = new ArrayList<>();
         generos1.add(Genero.DRAMA);
         generos1.add(Genero.THRILLER);
@@ -48,7 +46,6 @@ public class AppTest {
         imdb.adicionarRecurso(padrinho);
         imdb.adicionarRecurso(inception);
 
-        // Episódio
         ep1 = new Episodios("Piloto");
     }
 
@@ -56,9 +53,9 @@ public class AppTest {
     // TESTES DE LOGIN
     // =========================================================
 
-    /**
-     * Testa que o login com credenciais corretas devolve o utilizador.
-     */
+
+     //Testa que o login com credenciais corretas devolve o utilizador.
+
     @Test
     public void testLoginCorreto() {
         UtilizadorRegistado resultado = imdb.login("ana", "abc");
@@ -66,27 +63,27 @@ public class AppTest {
         assertEquals("ana", resultado.getNome());
     }
 
-    /**
-     * Testa que o login com password errada devolve null.
-     */
+
+     // Testa que o login com password errada devolve null.
+
     @Test
     public void testLoginPasswordErrada() {
         UtilizadorRegistado resultado = imdb.login("ana", "errada");
         assertNull(resultado);
     }
 
-    /**
-     * Testa que o login com username inexistente devolve null.
-     */
+
+     //Testa que o login com username inexistente devolve null.
+
     @Test
     public void testLoginUsernameInexistente() {
         UtilizadorRegistado resultado = imdb.login("naoexiste", "abc");
         assertNull(resultado);
     }
 
-    /**
-     * Testa que o admin é reconhecido como instância de Admin.
-     */
+
+     //Testa que o admin é reconhecido como instância de Admin.
+
     @Test
     public void testLoginAdmin() {
         UtilizadorRegistado resultado = imdb.login("admin", "admin");
@@ -98,9 +95,9 @@ public class AppTest {
     // TESTES DE MARCAR COMO VISTO
     // =========================================================
 
-    /**
-     * Testa que marcar um filme como visto funciona corretamente.
-     */
+
+     //Testa que marcar um filme como visto funciona corretamente.
+
     @Test
     public void testMarcarFilmeComoVisto() throws Exception {
         padrinho.marcarComoVisto(ana);
@@ -108,18 +105,18 @@ public class AppTest {
         assertTrue(ana.jaViu(padrinho));
     }
 
-    /**
-     * Testa que marcar o mesmo filme duas vezes lança JaVistoException.
-     */
+
+     // Testa que marcar o mesmo filme duas vezes lança JaVistoException.
+
     @Test
     public void testMarcarFilmeComoVistoJaVisto() throws Exception {
         padrinho.marcarComoVisto(ana);
         assertThrows(JaVistoException.class, () -> padrinho.marcarComoVisto(ana));
     }
 
-    /**
-     * Testa que marcar um episódio como visto funciona corretamente.
-     */
+
+     //Testa que marcar um episódio como visto funciona corretamente.
+
     @Test
     public void testMarcarEpisodioComoVisto() throws Exception {
         ep1.marcarComoVisto(ana);
@@ -127,18 +124,18 @@ public class AppTest {
         assertTrue(ana.jaViu(ep1));
     }
 
-    /**
-     * Testa que marcar o mesmo episódio duas vezes lança JaVistoException.
-     */
+
+     // Testa que marcar o mesmo episódio duas vezes lança JaVistoException.
+
     @Test
     public void testMarcarEpisodioComoVistoJaVisto() throws Exception {
         ep1.marcarComoVisto(ana);
         assertThrows(JaVistoException.class, () -> ep1.marcarComoVisto(ana));
     }
 
-    /**
-     * Testa que dois espectadores diferentes podem marcar o mesmo filme como visto.
-     */
+
+     //Testa que dois espectadores diferentes podem marcar o mesmo filme como visto.
+
     @Test
     public void testDoisEspectadoresFilmeVisto() throws Exception {
         padrinho.marcarComoVisto(ana);
@@ -151,9 +148,9 @@ public class AppTest {
     // TESTES DE CLASSIFICAÇÃO
     // =========================================================
 
-    /**
-     * Testa que classificar um filme já visto funciona corretamente.
-     */
+
+     //Testa que classificar um filme já visto funciona corretamente.
+
     @Test
     public void testClassificarFilme() throws Exception {
         padrinho.marcarComoVisto(ana);
@@ -161,18 +158,18 @@ public class AppTest {
         assertEquals(9.0, padrinho.getClassificacaoMedia(), 0.01);
     }
 
-    /**
-     * Testa que classificar um filme sem o ter visto lança RecursoNaoVistoException.
-     */
+
+     // Testa que classificar um filme sem o ter visto lança RecursoNaoVistoException.
+
     @Test
     public void testClassificarFilmeSemVerLanca() {
         assertThrows(RecursoNaoVistoException.class,
                 () -> ana.classificarFilme(padrinho, 8, ""));
     }
 
-    /**
-     * Testa que classificar o mesmo filme duas vezes lança ClassificacaoDuplicadaException.
-     */
+
+     //Testa que classificar o mesmo filme duas vezes lança ClassificacaoDuplicadaException.
+
     @Test
     public void testClassificarFilmeDuasVezesLanca() throws Exception {
         padrinho.marcarComoVisto(ana);
@@ -181,9 +178,9 @@ public class AppTest {
                 () -> ana.classificarFilme(padrinho, 7, "Segunda vez"));
     }
 
-    /**
-     * Testa que a nota inválida (fora de 1-10) lança IllegalArgumentException.
-     */
+
+     //Testa que a nota inválida (fora de 1-10) lança IllegalArgumentException.
+
     @Test
     public void testClassificacaoNotaInvalida() throws Exception {
         padrinho.marcarComoVisto(ana);
@@ -191,9 +188,9 @@ public class AppTest {
                 () -> ana.classificarFilme(padrinho, 11, ""));
     }
 
-    /**
-     * Testa que a média de classificações é calculada corretamente com vários espectadores.
-     */
+
+     // Testa que a média de classificações é calculada corretamente com vários espectadores.
+
     @Test
     public void testClassificacaoMediaVariosEspectadores() throws Exception {
         padrinho.marcarComoVisto(ana);
@@ -203,9 +200,9 @@ public class AppTest {
         assertEquals(7.0, padrinho.getClassificacaoMedia(), 0.01);
     }
 
-    /**
-     * Testa que classificar um episódio sem o ter visto lança RecursoNaoVistoException.
-     */
+
+     // Testa que classificar um episódio sem o ter visto lança RecursoNaoVistoException.
+
     @Test
     public void testClassificarEpisodioSemVerLanca() {
         assertThrows(RecursoNaoVistoException.class,
@@ -216,31 +213,30 @@ public class AppTest {
     // TESTES DE LISTA PESSOAL
     // =========================================================
 
-    /**
-     * Testa que adicionar um filme à lista pessoal funciona.
-     */
+
+     //Testa que adicionar um filme à lista pessoal funciona.
+
     @Test
     public void testAdicionarFilmeListaPessoal() {
         ana.adicionarFilmeListaPessoal(padrinho);
         assertTrue(ana.consultarListaPessoal().contains("O Padrinho"));
     }
 
-    /**
-     * Testa que o mesmo filme não é adicionado duas vezes à lista pessoal.
-     */
+
+     //Testa que o mesmo filme não é adicionado duas vezes à lista pessoal.
+
     @Test
     public void testAdicionarFilmeDuplicadoListaPessoal() {
         ana.adicionarFilmeListaPessoal(padrinho);
         ana.adicionarFilmeListaPessoal(padrinho);
-        // Conta apenas uma ocorrência
         String lista = ana.consultarListaPessoal();
         int count = lista.split("O Padrinho", -1).length - 1;
         assertEquals(1, count);
     }
 
-    /**
-     * Testa que remover um filme da lista pessoal funciona.
-     */
+
+     //Testa que remover um filme da lista pessoal funciona.
+
     @Test
     public void testRemoverFilmeListaPessoal() {
         ana.adicionarFilmeListaPessoal(padrinho);
@@ -248,9 +244,9 @@ public class AppTest {
         assertFalse(ana.consultarListaPessoal().contains("O Padrinho"));
     }
 
-    /**
-     * Testa que adicionar um episódio à lista pessoal funciona.
-     */
+
+     //Testa que adicionar um episódio à lista pessoal funciona.
+
     @Test
     public void testAdicionarEpisodioListaPessoal() {
         ana.adicionarEpisodioListaPessoal(ep1);
@@ -261,9 +257,9 @@ public class AppTest {
     // TESTES DE FILMES VISTOS
     // =========================================================
 
-    /**
-     * Testa que o contador de filmes vistos é atualizado corretamente.
-     */
+
+     // Testa que o contador de filmes vistos é atualizado corretamente.
+
     @Test
     public void testNumFilmesVistos() throws Exception {
         assertEquals(0, ana.getNumFilmesVistos());
@@ -277,9 +273,9 @@ public class AppTest {
     // TESTES DE DUPLICADOS NA DB
     // =========================================================
 
-    /**
-     * Testa que não é possível adicionar dois filmes com o mesmo título e ano.
-     */
+
+     // Testa que não é possível adicionar dois filmes com o mesmo título e ano.
+
     @Test
     public void testFilmeDuplicadoNaoAdicionado() {
         int antes = imdb.getLstRecursos().size();
@@ -289,9 +285,9 @@ public class AppTest {
         assertEquals(antes, imdb.getLstRecursos().size());
     }
 
-    /**
-     * Testa que é possível adicionar dois filmes com o mesmo título mas anos diferentes.
-     */
+
+     // Testa que é possível adicionar dois filmes com o mesmo título mas anos diferentes.
+
     @Test
     public void testFilmeMesmoTituloAnosDiferentes() {
         int antes = imdb.getLstRecursos().size();
@@ -305,9 +301,9 @@ public class AppTest {
     // TESTES DE PESQUISA
     // =========================================================
 
-    /**
-     * Testa que a pesquisa por título (parcial) devolve resultados corretos.
-     */
+
+     //Testa que a pesquisa por título (parcial) devolve resultados corretos.
+
     @Test
     public void testPesquisaFilmePorTitulo() {
         assertTrue(padrinho.correspondePesquisa("padrinho"));
@@ -315,9 +311,9 @@ public class AppTest {
         assertFalse(padrinho.correspondePesquisa("inception"));
     }
 
-    /**
-     * Testa que a pesquisa por nome de ator funciona corretamente.
-     */
+
+     // Testa que a pesquisa por nome de ator funciona corretamente.
+
     @Test
     public void testPesquisaAtorPorNome() {
         org.example.utils.Data dataFicticia = new org.example.utils.Data(1977, 9, 15);
@@ -331,18 +327,18 @@ public class AppTest {
     // TESTES DE GÉNEROS
     // =========================================================
 
-    /**
-     * Testa que criar um recurso sem géneros lança IllegalArgumentException.
-     */
+
+     // Testa que criar um recurso sem géneros lança IllegalArgumentException.
+
     @Test
     public void testCriarFilmeSemGenerosLanca() {
         assertThrows(IllegalArgumentException.class,
                 () -> new Filme("Sem Género", "desc", "2020", "90 min", new ArrayList<>()));
     }
 
-    /**
-     * Testa que criar um recurso com géneros funciona corretamente.
-     */
+
+     // Testa que criar um recurso com géneros funciona corretamente.
+
     @Test
     public void testCriarFilmeComGeneros() {
         List<Genero> g = new ArrayList<>();
@@ -356,9 +352,9 @@ public class AppTest {
     // TESTES DE LISTAGENS ORDENADAS
     // =========================================================
 
-    /**
-     * Testa que a listagem de filmes por título está ordenada alfabeticamente.
-     */
+
+     // Testa que a listagem de filmes por título está ordenada alfabeticamente.
+
     @Test
     public void testListagemFilmesPorTitulo() throws Exception {
         String resultado = imdb.listarFilmesPorTitulo();
@@ -367,9 +363,9 @@ public class AppTest {
         assertTrue(posI < posP);
     }
 
-    /**
-     * Testa que a listagem de filmes por classificação coloca o melhor em primeiro.
-     */
+
+     //Testa que a listagem de filmes por classificação coloca o melhor em primeiro.
+
     @Test
     public void testListagemFilmesPorClassificacao() throws Exception {
         padrinho.marcarComoVisto(ana);
@@ -383,9 +379,9 @@ public class AppTest {
         assertTrue(posP < posI);
     }
 
-    /**
-     * Testa que a listagem de utilizadores por filmes vistos está ordenada corretamente.
-     */
+
+     // Testa que a listagem de utilizadores por filmes vistos está ordenada corretamente.
+
     @Test
     public void testListagemUtilizadoresPorFilmesVistos() throws Exception {
         padrinho.marcarComoVisto(pedro);
