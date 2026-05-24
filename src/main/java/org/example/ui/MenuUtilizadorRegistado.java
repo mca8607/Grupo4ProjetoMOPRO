@@ -39,9 +39,10 @@ public class MenuUtilizadorRegistado {
             System.out.println("#  5. Marcar episódio como visto                #");
             System.out.println("#  6. Classificar filme                         #");
             System.out.println("#  7. Classificar episódio                      #");
-            System.out.println("#  8. Consultar a minha lista pessoal           #");
-            System.out.println("#  9. Adicionar à lista pessoal                 #");
-            System.out.println("#  10. Remover da lista pessoal                 #");
+            System.out.println("#  8. Ver classificações de um filme            #");
+            System.out.println("#  9. Consultar a minha lista pessoal           #");
+            System.out.println("#  10. Adicionar à lista pessoal                #");
+            System.out.println("#  11. Remover da lista pessoal                 #");
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
@@ -74,12 +75,15 @@ public class MenuUtilizadorRegistado {
                     classificarEpisodio();
                     break;
                 case "8":
-                    System.out.println(utilizador.consultarListaPessoal());
+                    verClassificacoesFilme();
                     break;
                 case "9":
-                    adicionarAListaPessoal();
+                    System.out.println(utilizador.consultarListaPessoal());
                     break;
                 case "10":
+                    adicionarAListaPessoal();
+                    break;
+                case "11":
                     removerDaListaPessoal();
                     break;
                 case "0":
@@ -183,6 +187,31 @@ public class MenuUtilizadorRegistado {
             System.out.println("Classificação registada com sucesso!");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+
+    /**
+     * Mostra todas as classificações de um filme escolhido pelo utilizador,
+     * incluindo a média e a classificação qualitativa (Fraco/Médio/Bom).
+     */
+    private void verClassificacoesFilme() {
+        System.out.println(imdb.listarFilmes());
+        String titulo = Utils.readLineFromConsole("Título do filme: ");
+        Filme filme = encontrarFilme(titulo);
+        if (filme == null) { System.out.println("Filme não encontrado."); return; }
+
+        System.out.println("\n=== Classificações de \"" + filme.getTitulo() + "\" ===");
+
+        if (filme.getClassificacoes().isEmpty()) {
+            System.out.println("Este filme ainda não tem classificações.");
+        } else {
+            for (Classificacao c : filme.getClassificacoes()) {
+                System.out.println("\t- " + c);
+            }
+            System.out.printf("Média: %.1f/10 | Classificação: %s%n",
+                    filme.getClassificacaoMedia(),
+                    filme.getClassificacaoQualitativa());
         }
     }
 

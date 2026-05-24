@@ -11,10 +11,14 @@ public class Classificacao implements Serializable {
 
     /** Espectador que atribuiu a classificação. */
     private Espectador espectador;
+
     /** Nota atribuída (entre 1 e 10). */
     private int nota;
+
     /** Comentário opcional associado à classificação. */
     private String comentario;
+
+
 
     /**
      * Cria uma nova classificação.

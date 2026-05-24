@@ -53,4 +53,46 @@ public class Serie extends Recurso implements Serializable {
         return temporadas;
     }
 
+
+    public double getClassificacaoMedia() {
+        double soma = 0;
+        int count = 0;
+        for (Temporada t : temporadas) {
+            for (Episodios e : t.getEpisodios()) {
+                for (Classificacao c : e.getClassificacoes()) {
+                    soma += c.getNota();
+                    count++;
+                }
+            }
+        }
+        return count == 0 ? 0.0 : soma / count;
+    }
+
+    /**
+     * Devolve a classificação qualitativa da série com base na média.
+     * Fraco: média menor que 5 | Médio: entre 5 e 7.5 | Bom: maior que 7.5.
+     *
+     * @return "Fraco", "Médio" ou "Bom", ou "Sem classificação" se não houver notas
+     */
+    public String getClassificacaoQualitativa() {
+        double media = getClassificacaoMedia();
+        if (media == 0.0) return "Sem classificação";
+        if (media < 5) return "Fraco";
+        if (media <= 7.5) return "Médio";
+        return "Bom";
+    }
+
+    /**
+     * Devolve uma representação textual da série
+     * com título, ano, descrição e classificação qualitativa.
+     *
+     * @return string com os dados da série
+     */
+    @Override
+    public String toString() {
+        return super.toString() + " [" + temporadas.size() + " temporada(s)] ["
+                + getClassificacaoQualitativa()
+                + (getClassificacaoMedia() == 0.0 ? "" : String.format(" - %.1f/10", getClassificacaoMedia()))
+                + "]";
+    }
 }

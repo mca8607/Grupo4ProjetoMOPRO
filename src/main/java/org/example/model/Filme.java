@@ -113,6 +113,22 @@ public class Filme extends Recurso implements MarcavelComoVisto {
         return false;
     }
 
+
+    /**
+     * Devolve a classificação qualitativa do filme com base na média.
+     * Fraco: média menor que 4 | Médio: entre 4 e 8 | Bom: maior que 8.
+     *
+     * @return "Fraco", "Médio" ou "Bom", ou "Sem classificação" se não houver notas
+     */
+    public String getClassificacaoQualitativa() {
+        if (classificacoes.isEmpty()) return "Sem classificação";
+        double media = getClassificacaoMedia();
+        if (media < 4) return "Fraco";
+        if (media <= 8) return "Médio";
+        return "Bom";
+    }
+
+
     /**
      * Verifica se o espectador já marcou este filme como visto.
      * @param espectador o espectador a verificar
@@ -141,11 +157,15 @@ public class Filme extends Recurso implements MarcavelComoVisto {
 
     /**
      * Devolve uma representação textual do filme
-     * com o título, ano, descrição e duração.
+     * com o título, ano, descrição, duração e classificação qualitativa.
+     *
      * @return string com os dados do filme
      */
     @Override
     public String toString() {
-        return super.toString() + " [Duração: " + duracao + "]";
+        return super.toString() + " [Duração: " + duracao + "] ["
+                + getClassificacaoQualitativa()
+                + (classificacoes.isEmpty() ? "" : String.format(" - %.1f/10", getClassificacaoMedia()))
+                + "]";
     }
 }
