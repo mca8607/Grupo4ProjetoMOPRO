@@ -2,13 +2,18 @@ package org.example.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
+
 /**
  * Representa uma temporada de uma {@link Serie}.
  * Agrega uma lista de {@link Episodios}.
  */
-public class Temporada{
-    private List<Episodios> episodios;
+public class Temporada implements Serializable{
+    /** Título da temporada. */
+    private String titulo;
 
+    /** Lista de episódios desta temporada. */
+    private List<Episodios> episodios;
 
     /**
      * Cria uma nova temporada.
@@ -18,6 +23,7 @@ public class Temporada{
      */
     public Temporada (String titulo, String descricao, String anoFinal) {
         this.episodios = new ArrayList<>();
+        this.titulo = titulo;
 
     }
     /**
@@ -29,10 +35,28 @@ public class Temporada{
     }
 
     /**
+     * Devolve o título da temporada.
+     * @return título da temporada
+     */
+    public String getTitulo() {
+        return titulo;
+    }
+
+
+    /**
      * Adiciona um episódio a esta temporada.
      * @param e episódio a adicionar
      */
     public void adicionarEpisodio(Episodios e) {
         this.episodios.add(e);
+    }
+
+    /**
+     * Devolve uma representação textual da temporada com o seu título.
+     * @return string com o título da temporada
+     */
+    @Override
+    public String toString() {
+        return (titulo != null && !titulo.isBlank()) ? titulo : "Temporada sem título";
     }
 }

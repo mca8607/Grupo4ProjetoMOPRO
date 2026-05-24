@@ -22,6 +22,9 @@ public class Episodios implements MarcavelComoVisto, Serializable {
     /** Lista de espectadores que marcaram o episódio como visto. */
     private List<Espectador> espectadoresQueViram;
 
+    /** Lista de atores que participam no episódio. */
+    private List<Ator> atores;
+
 
     /**
      * Cria um novo episódio.
@@ -31,6 +34,7 @@ public class Episodios implements MarcavelComoVisto, Serializable {
         this.titulo = titulo;
         this.classificacoes = new ArrayList<>();
         this.espectadoresQueViram = new ArrayList<>();
+        this.atores = new ArrayList<>();
     }
 
     /**
@@ -40,6 +44,35 @@ public class Episodios implements MarcavelComoVisto, Serializable {
     public String getTitulo() {
         return titulo;
     }
+
+
+    /**
+     * Adiciona um ator ao episódio, se ainda não estiver associado.
+     * @param a ator a adicionar
+     */
+    public void adicionarAtor(Ator a) {
+        if (!atores.contains(a)) {
+            atores.add(a);
+        }
+    }
+
+    /**
+     * Devolve a lista de atores do episódio.
+     * @return lista de atores
+     */
+    public List<Ator> getAtores() {
+        return atores;
+    }
+
+    /**
+     * Verifica se um determinado ator participa neste episódio.
+     * @param a o ator a verificar
+     * @return true se o ator pertence ao episódio, false caso contrário
+     */
+    public boolean temAtor(Ator a) {
+        return atores.contains(a);
+    }
+
 
 
     /**

@@ -1,12 +1,14 @@
 package org.example.model;
 
 import org.example.utils.Data;
+import java.io.Serializable;
 
 /**
  * Representa um ator que pode participar em filmes e episódios.
  * Implementa {@link Pesquisavel} para suporte à pesquisa por nome.
+ * Implementa {@link Serializable} para persistência de dados.
  */
-public class Ator implements Pesquisavel {
+public class Ator implements Pesquisavel, Serializable {
     /** Nome do ator. */
     private String nome;
     /** Data de nascimento do ator. */
@@ -42,7 +44,8 @@ public class Ator implements Pesquisavel {
         int count = 0;
         for (Recurso r : db.getLstRecursos()) {
             if (r instanceof Filme) {
-                if (r.correspondePesquisa(this.nome)) {
+                Filme f = (Filme) r;
+                if (f.temAtor(this)) {
                     count++;
                 }
             }
@@ -73,9 +76,9 @@ public class Ator implements Pesquisavel {
     }
 
     /**
-     * Devolve uma representação textual do ator com nome e data de nascimento.
-     *
-     * @return string com o nome e a data de nascimento do ator
+     * Verifica se o ator tem o nome indicado.
+     * @param nome nome a comparar
+     * @return true se o nome coincidir, false caso contrário
      */
     public boolean temNome(String nome) {
         return this.nome.equals(nome);

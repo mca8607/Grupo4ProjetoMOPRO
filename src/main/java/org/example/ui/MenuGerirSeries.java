@@ -38,12 +38,12 @@ public class MenuGerirSeries {
             System.out.println("#  2. Adicionar série                           #");
             System.out.println("#  3. Adicionar temporada a série               #");
             System.out.println("#  4. Adicionar episódio a temporada            #");
+            System.out.println("#  5. Associar ator a episódio                  #");
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
             System.out.println("#################################################");
             System.out.println();
-
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 
             switch (opcao) {
@@ -59,6 +59,8 @@ public class MenuGerirSeries {
                 case "4":
                     adicionarEpisodio();
                     break;
+                case "5":
+                    associarAtorAEpisodio();
                 case "0":
                     break;
                 default:
@@ -153,6 +155,75 @@ public class MenuGerirSeries {
             System.out.println("Operação cancelada.");
         }
     }
+
+
+    /**
+     * Permite associar um ator existente a um episódio de uma série.
+     * Guia o utilizador pela escolha da série, temporada, episódio e ator.
+     */
+    private void associarAtorAEpisodio() {
+        Serie serie = escolherSerie();
+        if (serie == null) return;
+
+        if (serie.getTemporadas().isEmpty()) {
+            System.out.println("Esta série não tem temporadas.");
+            return;
+        }
+
+        System.out.println("Temporadas disponíveis:");
+        for (int i = 0; i < serie.getTemporadas().size(); i++) {
+            System.out.println("  " + (i + 1) + ". " + serie.getTemporadas().get(i));
+        }
+
+        int numTemp = Utils.readIntFromConsole("Escolha o número da temporada: ");
+        if (numTemp < 1 || numTemp > serie.getTemporadas().size()) {
+            System.out.println("Temporada inválida.");
+            return;
+        }
+
+        Temporada temporada = serie.getTemporadas().get(numTemp - 1);
+
+        if (temporada.getEpisodios().isEmpty()) {
+            System.out.println("Esta temporada não tem episódios.");
+            return;
+        }
+
+        System.out.println("Episódios disponíveis:");
+        for (int i = 0; i < temporada.getEpisodios().size(); i++) {
+            System.out.println("  " + (i + 1) + ". " + temporada.getEpisodios().get(i));
+        }
+
+        int numEp = Utils.readIntFromConsole("Escolha o número do episódio: ");
+        if (numEp < 1 || numEp > temporada.getEpisodios().size()) {
+            System.out.println("Episódio inválido.");
+            return;
+        }
+
+        Episodios episodio = temporada.getEpisodios().get(numEp - 1);
+
+        if (imdb.getLstAtores().isEmpty()) {
+            System.out.println("Não existem atores registados. Adicione atores primeiro.");
+            return;
+        }
+
+        System.out.println(imdb.listarAtores());
+        String nomeAtor = Utils.readLineFromConsole("Nome do ator a associar: ");
+
+        Ator ator = imdb.pesquisaAtor(nomeAtor);
+        if (ator == null) {
+            System.out.println("Ator não encontrado.");
+            return;
+        }
+
+        if (episodio.temAtor(ator)) {
+            System.out.println("Este ator já está associado ao episódio \"" + episodio.getTitulo() + "\".");
+            return;
+        }
+
+        episodio.adicionarAtor(ator);
+        System.out.println("Ator \"" + ator.getNome() + "\" associado ao episódio \"" + episodio.getTitulo() + "\" com sucesso!");
+    }
+
 
 
     /**

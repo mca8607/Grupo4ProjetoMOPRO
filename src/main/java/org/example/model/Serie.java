@@ -2,13 +2,15 @@ package org.example.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Representa uma série na plataforma.
  * Herda de {@link Recurso} e agrega uma lista de {@link Temporada}.
  * Cada temporada contém os seus episódios.
+ * Implementa {@link Serializable} para persistência de dados.
  */
-public class Serie extends Recurso{
+public class Serie extends Recurso implements Serializable {
 
     /** Lista de temporadas desta série. */
     private List<Temporada> temporadas;

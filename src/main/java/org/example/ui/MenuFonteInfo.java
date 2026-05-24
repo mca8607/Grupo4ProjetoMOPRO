@@ -112,9 +112,11 @@ public class MenuFonteInfo {
         }
     }
 
+
     /**
      * Preenche a base de dados com dados de demonstração.
-     * Cria utilizadores, atores, filmes com géneros e uma série.
+     * Cria utilizadores, atores, filmes com géneros, séries com temporadas e episódios,
+     * e associa atores a filmes e episódios.
      */
     private void popularDadosDemo() {
         // 1. Utilizadores
@@ -122,45 +124,59 @@ public class MenuFonteInfo {
         criarEspectador("ana@example.com", "ana", "abc");
         criarEspectador("pedro@example.com", "pedro", "qwerty");
 
-        // 2. Atores
-        criarAtor("Pierce Brosnan", new Data(1953, 5, 16));
-        criarAtor("Tom Hardy", new Data(1977, 9, 15));
-        criarAtor("Helen Mirren", new Data(1945, 7, 26));
 
-        // 3. Filmes
+        // 2. Atores
+        Ator pierceBrosnan = new Ator("Pierce Brosnan", new Data(1953, 5, 16));
+        Ator tomHardy = new Ator("Tom Hardy", new Data(1977, 9, 15));
+        Ator helenMirren = new Ator("Helen Mirren", new Data(1945, 7, 26));
+        imdb.adicionarAtor(pierceBrosnan);
+        imdb.adicionarAtor(tomHardy);
+        imdb.adicionarAtor(helenMirren);
+
+
+        // 3. Filmes com atores associados
         List<Genero> generoDrama = new ArrayList<>();
         generoDrama.add(Genero.DRAMA);
-        generoDrama.add(Genero. THRILLER);
-        imdb.adicionarRecurso(new Filme("O Padrinho", "Drama criminal épico", "1972", "175 min", generoDrama));
+        generoDrama.add(Genero.THRILLER);
+        Filme padrinho = new Filme("O Padrinho", "Drama criminal épico", "1972", "175 min", generoDrama);
+        padrinho.adicionarAtor(helenMirren);
+        imdb.adicionarRecurso(padrinho);
 
         List<Genero> generoSciFi = new ArrayList<>();
         generoSciFi.add(Genero.SCI_FI);
         generoSciFi.add(Genero.ACTION);
-        imdb.adicionarRecurso(new Filme("Inception", "Thriller de ficção científica", "2010", "148 min", generoSciFi));
+        Filme inception = new Filme("Inception", "Thriller de ficção científica", "2010", "148 min", generoSciFi);
+        inception.adicionarAtor(tomHardy);
+        imdb.adicionarRecurso(inception);
 
         List<Genero> generoAcao = new ArrayList<>();
         generoAcao.add(Genero.ACTION);
         generoAcao.add(Genero.DRAMA);
-        imdb.adicionarRecurso(new Filme("The Dark Knight", "Ação/Drama", "2008", "152 min", generoAcao));
+        Filme darkKnight = new Filme("The Dark Knight", "Ação/Drama", "2008", "152 min", generoAcao);
+        darkKnight.adicionarAtor(tomHardy);
+        darkKnight.adicionarAtor(helenMirren);
+        imdb.adicionarRecurso(darkKnight);
 
-        // 4. Séries
+
+        // 4. Série com temporada, episódios e atores associados
         List<Genero> generoSerie = new ArrayList<>();
         generoSerie.add(Genero.HORROR);
         generoSerie.add(Genero.SCI_FI);
-        Serie strangerThings = new Serie("Stranger Things", "Suspense e Ficção", "2016", generoSerie);
+        Serie strangerThings = new Serie("Stranger Things", "Suspense e Ficção Científica", "2016", generoSerie);
+
+        Temporada temp1 = new Temporada("Temporada 1", "", "2016");
+        Episodios ep1 = new Episodios("Capítulo 1: A Desaparição de Will Byers");
+        Episodios ep2 = new Episodios("Capítulo 2: A Estranha");
+        ep1.adicionarAtor(pierceBrosnan);
+        ep2.adicionarAtor(pierceBrosnan);
+        ep2.adicionarAtor(helenMirren);
+        temp1.adicionarEpisodio(ep1);
+        temp1.adicionarEpisodio(ep2);
+        strangerThings.adicionarTemporadas(temp1);
+
         imdb.adicionarRecurso(strangerThings);
     }
 
-
-    /**
-     * Cria um ator e adiciona-o à base de dados.
-     * @param nome           nome do ator
-     * @param dataNascimento data de nascimento do ator
-     */
-    private void criarAtor(String nome, Data dataNascimento) {
-        Ator ator = new Ator(nome, dataNascimento);
-        imdb.adicionarAtor(ator);
-    }
 
     /**
      * Cria um espectador e adiciona-o à base de dados.

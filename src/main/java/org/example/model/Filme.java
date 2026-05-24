@@ -19,6 +19,10 @@ public class Filme extends Recurso implements MarcavelComoVisto {
     /** Lista de espectadores que marcaram o filme como visto. */
     private List<Espectador> espectadoresQueViram;
 
+    /** Lista de atores que participam no filme. */
+    private List<Ator> atores;
+
+
 
     /**
      * Cria um novo filme.
@@ -34,7 +38,38 @@ public class Filme extends Recurso implements MarcavelComoVisto {
         this.duracao = duracao;
         this.classificacoes = new ArrayList<>();
         this.espectadoresQueViram = new ArrayList<>();
+        this.atores = new ArrayList<>();
     }
+
+
+    /**
+     * Adiciona um ator ao filme, se ainda não estiver associado.
+     * @param a ator a adicionar
+     */
+    public void adicionarAtor(Ator a) {
+        if (!atores.contains(a)) {
+            atores.add(a);
+        }
+    }
+
+    /**
+     * Devolve a lista de atores do filme.
+     * @return lista de atores
+     */
+    public List<Ator> getAtores() {
+        return atores;
+    }
+
+    /**
+     * Verifica se um determinado ator participa neste filme.
+     * @param a o ator a verificar
+     * @return true se o ator pertence ao filme, false caso contrário
+     */
+    public boolean temAtor(Ator a) {
+        return atores.contains(a);
+    }
+
+
 
     /**
      * Adiciona uma classificação ao filme.

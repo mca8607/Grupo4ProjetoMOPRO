@@ -1,10 +1,7 @@
 package org.example.ui;
 
-import org.example.model.DB;
-import org.example.model.Filme;
-import org.example.model.Recurso;
+import org.example.model.*;
 import org.example.utils.Utils;
-import org.example.model.Genero;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +36,7 @@ public class MenuGerirFilmes {
             System.out.println("#  1. Listar filmes                             #");
             System.out.println("#  2. Adicionar filme                           #");
             System.out.println("#  3. Remover filme                             #");
+            System.out.println("#  4. Associar ator a filme                     #");
             System.out.println("#                                               #");
             System.out.println("#  0. Voltar                                    #");
             System.out.println("#                                               #");
@@ -56,6 +54,9 @@ public class MenuGerirFilmes {
                     break;
                 case "3":
                     removerFilme();
+                    break;
+                case "4":
+                    associarAtorAFilme();
                     break;
                 case "0":
                     break;
@@ -152,5 +153,50 @@ public class MenuGerirFilmes {
         } else {
             System.out.println("Operação cancelada.");
         }
+    }
+
+    /**
+     * Permite associar um ator existente a um filme existente.
+     * Lista os filmes disponíveis, pede o título do filme,
+     * lista os atores disponíveis e pede o nome do ator a associar.
+     */
+    private void associarAtorAFilme() {
+        System.out.println(imdb.listarFilmes());
+        String tituloFilme = Utils.readLineFromConsole("Título do filme: ");
+
+        Filme filme = null;
+        for (Recurso r : imdb.getLstRecursos()) {
+            if (r instanceof Filme && r.getTitulo().equalsIgnoreCase(tituloFilme)) {
+                filme = (Filme) r;
+                break;
+            }
+        }
+
+        if (filme == null) {
+            System.out.println("Filme não encontrado.");
+            return;
+        }
+
+        if (imdb.getLstAtores().isEmpty()) {
+            System.out.println("Não existem atores registados. Adicione atores primeiro.");
+            return;
+        }
+
+        System.out.println(imdb.listarAtores());
+        String nomeAtor = Utils.readLineFromConsole("Nome do ator a associar: ");
+
+        Ator ator = imdb.pesquisaAtor(nomeAtor);
+        if (ator == null) {
+            System.out.println("Ator não encontrado.");
+            return;
+        }
+
+        if (filme.temAtor(ator)) {
+            System.out.println("Este ator já está associado ao filme \"" + filme.getTitulo() + "\".");
+            return;
+        }
+
+        filme.adicionarAtor(ator);
+        System.out.println("Ator \"" + ator.getNome() + "\" associado ao filme \"" + filme.getTitulo() + "\" com sucesso!");
     }
 }
