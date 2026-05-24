@@ -8,16 +8,27 @@ import org.example.model.Genero;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Menu para gerir filmes: listar, adicionar e remover.
+ * Acessível apenas pelo Administrador.
+ * Ao adicionar um filme, é obrigatório associar pelo menos um género.
+ */
 public class MenuGerirFilmes {
     private DB imdb;
     private String opcao;
 
 
+    /**
+     * Cria o menu de gestão de filmes.
+     * @param imdb a base de dados da aplicação
+     */
     public MenuGerirFilmes(DB imdb) {
         this.imdb = imdb;
     }
 
+    /**
+     * Executa o menu em loop até o utilizador escolher voltar.
+     */
     public void run() {
         do {
             System.out.println("\n\n");
@@ -55,6 +66,11 @@ public class MenuGerirFilmes {
     }
 
 
+    /**
+     * Lê os dados de um novo filme (título, descrição, ano, duração e géneros)
+     * e adiciona-o à base de dados após confirmação.
+     * Cancela a operação se não for escolhido nenhum género.
+     */
     private void adicionarFilme() {
         System.out.println("\n--- Adicionar Filme ---");
         String titulo = Utils.readLineFromConsole("Título: ");
@@ -108,6 +124,10 @@ public class MenuGerirFilmes {
     }
 
 
+    /**
+     * Lista os filmes existentes, pede o título do filme a remover
+     * e remove-o da base de dados após confirmação.
+     */
     private void removerFilme() {
         System.out.println(imdb.listarFilmes());
         String titulo = Utils.readLineFromConsole("Título do filme a remover: ");

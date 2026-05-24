@@ -6,15 +6,27 @@ import org.example.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Menu para gerir séries: listar, adicionar séries, temporadas e episódios.
+ * Acessível apenas pelo Administrador.
+ * Ao adicionar uma série, é obrigatório associar pelo menos um género.
+ */
 public class MenuGerirSeries {
     private DB imdb;
     private String opcao;
 
+    /**
+     * Cria o menu de gestão de séries.
+     * @param imdb a base de dados da aplicação
+     */
     public MenuGerirSeries(DB imdb) {
         this.imdb = imdb;
     }
 
-
+    /**
+     * Executa o menu em loop até o utilizador escolher voltar.
+     */
     public void run() {
         do {
             System.out.println("\n\n");
@@ -56,6 +68,11 @@ public class MenuGerirSeries {
     }
 
 
+    /**
+     * Lê os dados de uma nova série (título, descrição, ano e géneros)
+     * e adiciona-a à base de dados após confirmação.
+     * Cancela a operação se não for escolhido nenhum género.
+     */
     private void adicionarSerie() {
         System.out.println("\n--- Adicionar Série ---");
         String titulo = Utils.readLineFromConsole("Título: ");
@@ -80,6 +97,10 @@ public class MenuGerirSeries {
     }
 
 
+    /**
+     * Pede ao utilizador que escolha uma série existente e adiciona-lhe
+     * uma nova temporada após confirmação.
+     */
     private void adicionarTemporada() {
         Serie serie = escolherSerie();
         if (serie == null) return;
@@ -97,6 +118,10 @@ public class MenuGerirSeries {
         }
     }
 
+    /**
+     * Pede ao utilizador que escolha uma série e uma temporada,
+     * e adiciona um novo episódio a essa temporada após confirmação.
+     */
     private void adicionarEpisodio() {
         Serie serie = escolherSerie();
         if (serie == null) return;
@@ -130,6 +155,11 @@ public class MenuGerirSeries {
     }
 
 
+    /**
+     * Apresenta a lista de séries e devolve a série cujo título é introduzido
+     * pelo utilizador.
+     * @return a série encontrada, ou null se não existir
+     */
     private Serie escolherSerie() {
         System.out.println(imdb.listarSeries());
         String titulo = Utils.readLineFromConsole("Título da série: ");
@@ -144,6 +174,12 @@ public class MenuGerirSeries {
     }
 
 
+    /**
+     * Apresenta os géneros disponíveis e permite ao utilizador escolher
+     * um ou mais, um de cada vez.
+     * É obrigatório escolher pelo menos um género.
+     * @return lista de géneros escolhidos
+     */
     private List<Genero> escolherGeneros() {
         Genero[] todos = Genero.values();
         List<Genero> escolhidos = new ArrayList<>();

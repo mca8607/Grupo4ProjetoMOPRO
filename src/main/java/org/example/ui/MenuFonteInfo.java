@@ -7,16 +7,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Menu inicial que permite escolher a fonte de informação da aplicação.
+ * Oferece as opções de carregar dados demo, carregar de ficheiro
+ * ou guardar os dados atuais para ficheiro.
+ */
 public class MenuFonteInfo {
     private DB imdb;
     private String opcao;
 
+    /** Nome do ficheiro usado para guardar e carregar a base de dados. */
     private static final String FICHEIRO = "imdb.dat";
 
+    /**
+     * Cria o menu com a base de dados fornecida.
+     * @param imdb a base de dados da aplicação
+     */
     public MenuFonteInfo(DB imdb) {
         this.imdb = imdb;
     }
 
+
+    /**
+     * Executa o menu em loop até o utilizador avançar para o menu principal.
+     */
     public void run() {
         do {
             System.out.println("\n\n");
@@ -65,6 +79,10 @@ public class MenuFonteInfo {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Guarda o estado atual da base de dados no ficheiro {@value FICHEIRO}.
+     * Apresenta mensagem de sucesso ou erro consoante o resultado.
+     */
     private void guardarEmFicheiro() {
         try {
             this.imdb.guardar(FICHEIRO);
@@ -74,7 +92,11 @@ public class MenuFonteInfo {
         }
     }
 
-
+    /**
+     * Carrega a base de dados a partir do ficheiro {@value FICHEIRO}.
+     * Substitui os dados em memória pelos dados carregados.
+     * Apresenta mensagem de sucesso ou erro consoante o resultado.
+     */
     private void carregarDeFicheiro() {
         try {
             DB carregado = DB.carregar(FICHEIRO);
@@ -90,7 +112,10 @@ public class MenuFonteInfo {
         }
     }
 
-
+    /**
+     * Preenche a base de dados com dados de demonstração.
+     * Cria utilizadores, atores, filmes com géneros e uma série.
+     */
     private void popularDadosDemo() {
         // 1. Utilizadores
         criarAdmin("admin@example.com", "admin", "admin");
@@ -126,16 +151,35 @@ public class MenuFonteInfo {
         imdb.adicionarRecurso(strangerThings);
     }
 
+
+    /**
+     * Cria um ator e adiciona-o à base de dados.
+     * @param nome           nome do ator
+     * @param dataNascimento data de nascimento do ator
+     */
     private void criarAtor(String nome, Data dataNascimento) {
         Ator ator = new Ator(nome, dataNascimento);
         imdb.adicionarAtor(ator);
     }
 
+    /**
+     * Cria um espectador e adiciona-o à base de dados.
+     * @param email    endereço de email
+     * @param nome     nome de utilizador
+     * @param password palavra-passe
+     */
     private void criarEspectador(String email, String nome, String password) {
         Espectador espectador = new Espectador(email, nome, password);
         imdb.adicionarUtilizador(espectador);
     }
 
+
+    /**
+     * Cria um administrador e adiciona-o à base de dados.
+     * @param email    endereço de email
+     * @param nome     nome de utilizador
+     * @param password palavra-passe
+     */
     private void criarAdmin(String email, String nome, String password) {
         Admin admin = new Admin(email, nome, password);
         imdb.adicionarUtilizador(admin);

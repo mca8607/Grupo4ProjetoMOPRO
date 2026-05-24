@@ -11,12 +11,26 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Classe principal que representa a base de dados da plataforma.
+ * Gere utilizadores, atores e recursos (filmes e séries).
+ * Suporta serialização para persistência de dados em ficheiro.
+ */
 public class DB implements Serializable{
+    /** URL identificador da base de dados. */
     private String url;
+    /** Lista de utilizadores registados (admins e espectadores). */
     private List<UtilizadorRegistado> lstUtilizadores;
+    /** Lista de atores registados. */
     private List<Ator> lstAtores;
+    /** Lista central de recursos (filmes e séries). */
     private List<Recurso> lstRecursos;
 
+
+    /**
+     * Cria uma nova base de dados.
+     * @param url identificador ou URL da base de dados
+     */
     public DB(String url) {
         this.url = url;
         this.lstAtores = new ArrayList<>();
@@ -25,12 +39,33 @@ public class DB implements Serializable{
     }
 
     // --- Métodos de Adição ---
+
+
+    /**
+     * Adiciona um ator à base de dados.
+     * @param a ator a adicionar
+     */
     public void adicionarAtor(Ator a) {
         this.lstAtores.add(a);
     }
+
+
+    /**
+     * Adiciona um utilizador à base de dados.
+     * @param u utilizador a adicionar
+     */
     public void adicionarUtilizador(UtilizadorRegistado u) {
         this.lstUtilizadores.add(u);
     }
+
+
+    /**
+     * Adiciona um recurso (filme ou série) à base de dados.
+     * Não permite duplicados: dois recursos com o mesmo título e ano
+     * são considerados duplicados e não são adicionados.
+     * @param novoRecurso recurso a adicionar
+     */
+
     public void adicionarRecurso(Recurso novoRecurso) {
         for (Recurso r : lstRecursos) {
             if (r.getTitulo().equalsIgnoreCase(novoRecurso.getTitulo()) &&
@@ -43,11 +78,23 @@ public class DB implements Serializable{
     }
 
     // --- Métodos de Remoção ---
+
+
+    /**
+     * Remove um ator da base de dados.
+     * @param ator ator a remover
+     */
     public void removerAtor(Ator ator) {
         lstAtores.remove(ator);
     }
 
     // --- Métodos de Pesquisa e Login ---
+
+    /**
+     * Pesquisa um utilizador pelo nome (username).
+     * @param username nome do utilizador
+     * @return o utilizador encontrado, ou null se não existir
+     */
     public UtilizadorRegistado pesquisaUtilizador(String username) {
         for (UtilizadorRegistado u : lstUtilizadores) {
             if (u.temNome(username)) {
@@ -57,6 +104,13 @@ public class DB implements Serializable{
         return null;
     }
 
+
+    /**
+     * Autentica um utilizador com username e password.
+     * @param username nome de utilizador
+     * @param password palavra-passe
+     * @return o utilizador autenticado, ou null se as credenciais forem inválidas
+     */
     public UtilizadorRegistado login(String username, String password) {
         UtilizadorRegistado ur = pesquisaUtilizador(username);
         if (ur != null && ur.temPassord(password)) {
@@ -65,6 +119,12 @@ public class DB implements Serializable{
         return null;
     }
 
+
+    /**
+     * Pesquisa um ator pelo nome exato.
+     * @param nome nome do ator
+     * @return o ator encontrado, ou null se não existir
+     */
     public Ator pesquisaAtor(String nome) {
         for (Ator a : lstAtores) {
             if (a.temNome(nome)) {
@@ -75,6 +135,11 @@ public class DB implements Serializable{
     }
 
     // --- Métodos de Listagem ---
+
+    /**
+     * Devolve uma representação textual de todos os utilizadores.
+     * @return string com a lista de utilizadores
+     */
     public String listarUtilizadores() {
         StringBuilder sb = new StringBuilder("\nLista de Utilizadores:");
         if (lstUtilizadores.isEmpty()) {
@@ -87,6 +152,11 @@ public class DB implements Serializable{
         return sb.toString();
     }
 
+
+    /**
+     * Devolve uma representação textual de todos os atores.
+     * @return string com a lista de atores
+     */
     public String listarAtores() {
         StringBuilder sb = new StringBuilder("\nLista de Atores:");
         if (lstAtores.isEmpty()) {
@@ -99,6 +169,11 @@ public class DB implements Serializable{
         return sb.toString();
     }
 
+
+    /**
+     * Devolve uma representação textual de todos os filmes.
+     * @return string com a lista de filmes
+     */
     public String listarFilmes() {
         StringBuilder sb = new StringBuilder("\nLista de Filmes:");
         boolean temFilmes = false;
@@ -111,6 +186,11 @@ public class DB implements Serializable{
         return temFilmes ? sb.toString() : "\nLista de Filmes: (VAZIA)";
     }
 
+
+    /**
+     * Devolve uma representação textual de todas as séries.
+     * @return string com a lista de séries
+     */
     public String listarSeries() {
         StringBuilder sb = new StringBuilder("\nLista de Séries:");
         boolean temSeries = false;
@@ -124,6 +204,12 @@ public class DB implements Serializable{
     }
 
 
+    // --- Métodos de Listagem Ordenada ---
+
+    /**
+     * Extrai apenas os filmes da lista de recursos.
+     * @return lista de filmes
+     */
     private List<Filme> extrairFilmes() {
         List<Filme> filmes = new ArrayList<>();
         for (Recurso r : lstRecursos) {
@@ -134,6 +220,11 @@ public class DB implements Serializable{
         return filmes;
     }
 
+
+    /**
+     * Devolve os filmes ordenados alfabeticamente por título (A-Z).
+     * @return string com os filmes ordenados por título
+     */
     public String listarFilmesPorTitulo() {
         List<Filme> filmes = extrairFilmes();
         Collections.sort(filmes, new Comparator<Filme>() {
@@ -148,6 +239,12 @@ public class DB implements Serializable{
         return sb.toString();
     }
 
+
+
+    /**
+     * Devolve os filmes ordenados por classificação média (do maior para o menor).
+     * @return string com os filmes ordenados por classificação média
+     */
     public String listarFilmesPorClassificacaoMedia() {
         List<Filme> filmes = extrairFilmes();
         Collections.sort(filmes, new Comparator<Filme>() {
@@ -164,6 +261,11 @@ public class DB implements Serializable{
         return sb.toString();
     }
 
+
+    /**
+     * Devolve os atores ordenados alfabeticamente por nome (A-Z).
+     * @return string com os atores ordenados por nome
+     */
     public String listarAtoresPorNome() {
         List<Ator> atores = new ArrayList<>(lstAtores);
         Collections.sort(atores, new Comparator<Ator>() {
@@ -178,6 +280,11 @@ public class DB implements Serializable{
         return sb.toString();
     }
 
+
+    /**
+     * Devolve os atores ordenados pelo número de filmes em que participaram (do maior para o menor).
+     * @return string com os atores ordenados por número de filmes
+     */
     public String listarAtoresPorNumFilmes() {
         List<Ator> atores = new ArrayList<>(lstAtores);
         final DB self = this;
@@ -195,6 +302,11 @@ public class DB implements Serializable{
         return sb.toString();
     }
 
+
+    /**
+     * Devolve os utilizadores ordenados pelo número de filmes vistos (do maior para o menor).
+     * @return string com os utilizadores ordenados por filmes vistos
+     */
     public String listarUtilizadoresPorFilmesVistos() {
         List<UtilizadorRegistado> utilizadores = new ArrayList<>(lstUtilizadores);
         Collections.sort(utilizadores, new Comparator<UtilizadorRegistado>() {
@@ -211,13 +323,29 @@ public class DB implements Serializable{
         return sb.toString();
     }
 
+    // --- Serialização ---
 
+
+    /**
+     * Guarda o estado atual da base de dados num ficheiro binário.
+     * @param ficheiro caminho do ficheiro onde guardar
+     * @throws IOException se ocorrer um erro ao escrever o ficheiro
+     */
     public void guardar(String ficheiro) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ficheiro));
         oos.writeObject(this);
         oos.close();
     }
 
+
+
+    /**
+     * Carrega uma base de dados a partir de um ficheiro binário previamente guardado.
+     * @param ficheiro caminho do ficheiro a ler
+     * @return a base de dados carregada
+     * @throws IOException            se ocorrer um erro ao ler o ficheiro
+     * @throws ClassNotFoundException se a classe não for encontrada durante a desserialização
+     */
     public static DB carregar(String ficheiro) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ficheiro));
         DB db = (DB) ois.readObject();
@@ -225,23 +353,47 @@ public class DB implements Serializable{
         return db;
     }
 
+    // --- Getters ---
 
+
+    /**
+     * Devolve o URL da base de dados.
+     * @return url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Devolve a lista de todos os utilizadores.
+     * @return lista de utilizadores
+     */
     public List<UtilizadorRegistado> getLstUtilizadores() {
         return lstUtilizadores;
     }
 
+
+    /**
+     * Devolve a lista de todos os atores.
+     * @return lista de atores
+     */
     public List<Ator> getLstAtores() {
         return lstAtores;
     }
 
+
+    /**
+     * Devolve a lista de todos os recursos (filmes e séries).
+     * @return lista de recursos
+     */
     public List<Recurso> getLstRecursos() {
         return lstRecursos;
     }
 
+    /**
+     * Devolve uma representação textual do estado atual da base de dados.
+     * @return string com utilizadores, atores, filmes e séries
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("=== Estado atual da DB ===").append("\n");
