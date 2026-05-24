@@ -3,14 +3,27 @@ package org.example.ui;
 import org.example.model.DB;
 import org.example.utils.Utils;
 
+/**
+ * Menu sem autenticação (visitante).
+ * Permite listar atores, listar filmes e pesquisar conteúdos.
+ */
 public class MenuSemLogin {
     private DB imdb;
     private String opcao;
 
+
+    /**
+     * Cria o menu do visitante.
+     * @param imdb a base de dados da aplicação
+     */
     public MenuSemLogin(DB imdb) {
         this.imdb = imdb;
     }
 
+
+    /**
+     * Executa o menu em loop até o utilizador escolher voltar.
+     */
     public void run() {
         do {
             System.out.println("\n\n");

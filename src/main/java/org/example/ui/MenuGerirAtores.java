@@ -3,14 +3,26 @@ package org.example.ui;
 import org.example.model.DB;
 import org.example.utils.Utils;
 
+/**
+ * Menu para gerir atores: listar, adicionar e remover.
+ * Acessível apenas pelo Administrador.
+ */
 public class MenuGerirAtores {
     private DB imdb;
     private String opcao;
 
+    /**
+     * Cria o menu de gestão de atores.
+     * @param imdb a base de dados da aplicação
+     */
 
     public MenuGerirAtores(DB imdb) {
         this.imdb = imdb;
     }
+
+    /**
+     * Executa o menu em loop até o utilizador escolher voltar.
+     */
 
     public void run() {
         do {

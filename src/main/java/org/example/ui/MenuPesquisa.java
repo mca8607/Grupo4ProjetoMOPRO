@@ -7,12 +7,28 @@ import org.example.model.DB;
 import org.example.utils.Utils;
 import java.util.ArrayList;
 
+/**
+ * Menu de pesquisa de conteúdos.
+ * Permite pesquisar filmes e séries pelo título,
+ * e atores pelo nome, utilizando a interface {@link Pesquisavel}.
+ */
 public class MenuPesquisa {
     private DB imdb;
 
+
+    /**
+     * Cria o menu de pesquisa.
+     * @param imdb a base de dados da aplicação
+     */
     public MenuPesquisa(DB imdb) {
         this.imdb = imdb;
     }
+
+
+    /**
+     * Lê o termo de pesquisa e apresenta os resultados.
+     * Se o termo estiver vazio, cancela a pesquisa.
+     */
 
     public void run() {
         System.out.println("\n--- Pesquisa de Conteúdos ---");
@@ -26,6 +42,12 @@ public class MenuPesquisa {
         efetuarPesquisa(termo);
     }
 
+
+    /**
+     * Efetua a pesquisa nos recursos e nos atores da base de dados.
+     * Utiliza o método {@link Pesquisavel#correspondePesquisa(String)} de cada objeto.
+     * @param termo texto a pesquisar
+     */
     private void efetuarPesquisa(String termo) {
         ArrayList<Pesquisavel> resultados = new ArrayList<>();
 
@@ -46,6 +68,13 @@ public class MenuPesquisa {
         apresentarResultados(resultados, termo);
     }
 
+
+    /**
+     * Apresenta os resultados da pesquisa no ecrã.
+     * Indica o tipo de cada resultado (Filme, Serie ou Ator).
+     * @param resultados lista de objetos que correspondem à pesquisa
+     * @param termo      termo que foi pesquisado
+     */
     private void apresentarResultados(ArrayList<Pesquisavel> resultados, String termo) {
         System.out.println("\nResultados para: '" + termo + "'");
         System.out.println("------------------------------------");

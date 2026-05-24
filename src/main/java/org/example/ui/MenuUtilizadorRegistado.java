@@ -3,16 +3,28 @@ package org.example.ui;
 import org.example.model.*;
 import org.example.utils.Utils;
 
+/**
+ * Menu do utilizador registado (espectador).
+ * Permite ver filmes, pesquisar, marcar como visto, classificar e gerir a lista pessoal.
+ */
 public class MenuUtilizadorRegistado {
     private DB imdb;
     private Espectador utilizador;
     private String opcao;
 
+    /**
+     * Cria o menu do utilizador registado.
+     * @param imdb       a base de dados da aplicação
+     * @param utilizador o espectador que fez login
+     */
     public MenuUtilizadorRegistado(DB imdb, Espectador utilizador) {
         this.utilizador = utilizador;
         this.imdb = imdb;
     }
 
+    /**
+     * Executa o menu em loop até o utilizador escolher voltar.
+     */
     public void run() {
         do {
             System.out.println("\n\n");
@@ -67,6 +79,12 @@ public class MenuUtilizadorRegistado {
         while (!opcao.equals("0"));
     }
 
+
+    /**
+     * Permite ao utilizador marcar um filme como visto.
+     * Mostra a lista de filmes e pede o título.
+     * Lança mensagem de erro se o filme já foi marcado como visto.
+     */
     private void marcarFilmeComoVisto() {
         System.out.println(imdb.listarFilmes());
         String titulo = Utils.readLineFromConsole("Título do filme a marcar como visto: ");
@@ -85,6 +103,12 @@ public class MenuUtilizadorRegistado {
         }
     }
 
+
+    /**
+     * Permite ao utilizador classificar um filme que já tenha visto.
+     * Pede uma nota entre 1 e 10 e um comentário opcional.
+     * Mostra uma mensagem de erro se o filme não foi visto ou já foi classificado.
+     */
     private void classificarFilme() {
         System.out.println(imdb.listarFilmes());
         String titulo = Utils.readLineFromConsole("Título do filme a classificar: ");
@@ -114,6 +138,11 @@ public class MenuUtilizadorRegistado {
     }
 
 
+
+    /**
+     * Adiciona um filme à lista pessoal do utilizador.
+     * Mostra a lista de filmes e pede o título.
+     */
     private void adicionarFilmeListaPessoal() {
         System.out.println(imdb.listarFilmes());
         String titulo = Utils.readLineFromConsole("Título do filme a adicionar à lista: ");
@@ -129,6 +158,10 @@ public class MenuUtilizadorRegistado {
     }
 
 
+    /**
+     * Remove um filme da lista pessoal do utilizador.
+     * Mostra a lista pessoal atual e pede o título.
+     */
     private void removerFilmeListaPessoal() {
         System.out.println(utilizador.consultarListaPessoal());
         String titulo = Utils.readLineFromConsole("Título do filme a remover da lista: ");
@@ -143,6 +176,12 @@ public class MenuUtilizadorRegistado {
         System.out.println("\"" + filme.getTitulo() + "\" removido da lista pessoal!");
     }
 
+
+    /**
+     * Procura um filme na base de dados pelo título (ignora maiúsculas/minúsculas).
+     * @param titulo título do filme a procurar
+     * @return o filme encontrado ou null se não existir
+     */
 
     private Filme encontrarFilme(String titulo) {
         for (Recurso r : imdb.getLstRecursos()) {

@@ -3,14 +3,26 @@ package org.example.ui;
 import org.example.model.DB;
 import org.example.utils.Utils;
 
+/**
+ * Menu principal do Administrador.
+ * Permite gerir atores, filmes, séries, listar utilizadores e consultar listagens ordenadas.
+ */
 public class MenuAdministrador {
     private DB imdb;
     private String opcao;
 
+    /**
+     * Cria o menu do administrador.
+     * @param imdb a base de dados da aplicação
+     */
     public MenuAdministrador(DB imdb) {
         this.imdb = imdb;
     }
 
+
+    /**
+     * Executa o menu em loop até o administrador escolher voltar.
+     */
     public void run() {
         do {
             System.out.println("\n\n");
